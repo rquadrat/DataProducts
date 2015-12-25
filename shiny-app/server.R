@@ -1,5 +1,3 @@
-.libPaths(c(.libPaths(), "/home/rodde/R/x86_64-pc-linux-gnu-library/3.2"))
-
 require("forecast")
 require("lubridate")
 
