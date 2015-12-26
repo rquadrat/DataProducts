@@ -38,6 +38,7 @@ A special class of time series modelling functions is applied:
 A non-seasonal ARIMA model is defined by:
 $$ y'_{t} = c + \phi_{1}y'_{t-1} + \cdots + \phi_{p}y'_{t-p} + \theta_{1}e_{t-1} + \cdots + \theta_{q}e_{t-q} + e_{t}$$
 The degrees of the ARIMA model are determined with the forecast::auto.arima() function. The best model is selected based on the AICc criterium (The lower the better)
+
 ```{r, echo=1:2}
 
 model<-auto.arima(wineind, max.order=6, stepwise=T, approximation = T)
