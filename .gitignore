@@ -1,2 +1,4 @@
 shiny-app/rsconnect/
 forecasting_presentation/.cache/
+**/.RData
+**/.Rhistory

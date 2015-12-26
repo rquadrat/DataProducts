@@ -51,9 +51,10 @@
 <li>Data can be found at <a href="https://datamarket.com/data/set/22q2/monthly-australian-wine-sales-thousands-of-litres-by-wine-makers-in-bottles-1-litre">datamarket.com</a></li>
 <li>It contains Australian total wine sales by wine makers in bottles smaller and equal to 1 litre</li>
 <li>Data is from January 1980 to August 1994</li>
+<li>The data is a R timeseries object with a frequency of 12</li>
 </ul>
 
-<p>The first few entries (in thousand litres) are:</p>
+<p>The data for the first three years (in thousand litres) is:</p>
 
 <pre><code>##        Jan   Feb   Mar   Apr   May   Jun   Jul   Aug   Sep   Oct   Nov   Dec
 ## 1980 15136 16733 20016 17708 18019 19227 22893 23739 21133 22591 26786 29740
@@ -67,14 +68,16 @@
 
 <slide class="" id="slide-2" style="background:;">
   <hgroup>
-    <h2>Applied model</h2>
+    <h2>Application Idea</h2>
   </hgroup>
   <article data-timings="">
-    <p>The Goal is the forecast of future wine sales in Australia. 
-A special class of time series modelling functions is applied: 
-A non-seasonal ARIMA model is defined by:
+    <p>The Goal is the forecast of future bottled wine sales in Australia.<br>
+A special class of time series modelling functions is applied: An ARIMA model.  </p>
+
+<p>A non-seasonal ARIMA model is defined by the following equation:
 \[ y'_{t} = c + \phi_{1}y'_{t-1} + \cdots + \phi_{p}y'_{t-p} + \theta_{1}e_{t-1} + \cdots + \theta_{q}e_{t-q} + e_{t}\]
-The degrees of the ARIMA model are determined with the forecast::auto.arima() function. The best model is selected based on the AICc criterium (The lower the better)</p>
+(Look <a href="https://www.otexts.org/fpp/8/5">here</a> for more explanations.)<br>
+The degrees of the ARIMA model are determined with the forecast::auto.arima() function. The best model is selected based on the AICc criterium (The lower, the better).</p>
 
 <pre><code class="r">model&lt;-auto.arima(wineind, max.order=6, stepwise=T, approximation = T)
 </code></pre>
@@ -90,11 +93,26 @@ The degrees of the ARIMA model are determined with the forecast::auto.arima() fu
 
 <slide class="" id="slide-3" style="background:;">
   <hgroup>
-    <h2>The shiny application</h2>
+    <h2>The Shiny application - Functional aspects</h2>
   </hgroup>
   <article data-timings="">
-    <ul>
-<li>Allows</li>
+    <h3>Functional scope</h3>
+
+<p>The shiny Application interactively shows the forecast of Australian bottled wine sales:</p>
+
+<ul>
+<li>The forecast period can be chosen between 5 and 200 month</li>
+<li>You can comapre models with and without Box-Cox transformation of the data</li>
+<li>For a detailed view the plotted timespan can be adjusted</li>
+<li>The forecast can be plotted with and without confidence intervals </li>
+</ul>
+
+<h3>Further Improvements</h3>
+
+<ul>
+<li>Make the training dataset selectable</li>
+<li>Selection of testset to compare forecast and real data</li>
+<li>Include external regressors in ARIMA model and show the effect on forecast</li>
 </ul>
 
   </article>
@@ -103,13 +121,27 @@ The degrees of the ARIMA model are determined with the forecast::auto.arima() fu
 
 <slide class="" id="slide-4" style="background:;">
   <hgroup>
-    <h2>Further Improvements</h2>
+    <h2>The Shiny application - Technical aspects</h2>
   </hgroup>
   <article data-timings="">
-    <ul>
-<li>Other model as ets or tbats can be used for comparison</li>
-<li>a dataset could be made selective </li>
-<li>include testset for forecast quality validation</li>
+    <p><br></p>
+
+<ul>
+<li>The model calculation is the most computational intensive part:
+
+<ul>
+<li>Therefore the model calculation is made reactive</li>
+<li>Model is only calculated when Box-Cox CheckBox input changes<br>
+<br></li>
+</ul></li>
+<li>Cross-dependence between the forecast length input and the plotting range slider:
+
+<ul>
+<li>When the forecast period changes also the accessible range of plotting range slider changes</li>
+<li>Therefore the maximum of the slider range has to be reset</li>
+<li>This is done via the updateSliderInput() function</li>
+<li>Slider is rendered in server.R with renderUI() function</li>
+</ul></li>
 </ul>
 
   </article>
@@ -128,19 +160,19 @@ The degrees of the ARIMA model are determined with the forecast::auto.arima() fu
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=2 title='Applied model'>
+        data-slide=2 title='Application Idea'>
          2
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=3 title='The shiny application'>
+        data-slide=3 title='The Shiny application - Functional aspects'>
          3
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=4 title='Further Improvements'>
+        data-slide=4 title='The Shiny application - Technical aspects'>
          4
       </a>
     </li>
