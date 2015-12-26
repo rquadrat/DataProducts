@@ -47,7 +47,7 @@ shinyServer(
         })
         
         output$TimeControl<-renderUI({
-            sliderInput('TimeControl', 'Start year of plotting interval', date_decimal(1980), date_decimal(stoptime), c(date_decimal(1980), date_decimal(stoptime)),
+            sliderInput('TimeControl', 'Select plotting interval', date_decimal(1980), date_decimal(stoptime), c(date_decimal(1980), date_decimal(stoptime)),
                         timeFormat = "%Y %b") #, timeFormat = '%Y %m')
         })
     }
